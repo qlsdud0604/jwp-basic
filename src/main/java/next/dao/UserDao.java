@@ -13,10 +13,6 @@ import next.model.User;
 public class UserDao {
     public void insert(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
-            String creatQuery() {
-                return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-            }
-
             void setValues(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getUserId());
                 pstmt.setString(2, user.getPassword());
@@ -24,17 +20,12 @@ public class UserDao {
                 pstmt.setString(4, user.getEmail());
             }
         };
-
-        jdbcTemplate.update();
+        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql);
     }
 
     public void update(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
-            @Override
-            String creatQuery() {
-                return "UPDATE USERS SET password=?, name=?, email=? WHERE userid=?";
-            }
-
             @Override
             void setValues(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getPassword());
@@ -43,8 +34,8 @@ public class UserDao {
                 pstmt.setString(4, user.getUserId());
             }
         };
-
-        jdbcTemplate.update();
+        String sql = "UPDATE USERS SET password=?, name=?, email=? WHERE userid=?";
+        jdbcTemplate.update(sql);
     }
 
     public List<User> findAll() throws SQLException {

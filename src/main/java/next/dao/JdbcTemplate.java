@@ -9,12 +9,11 @@ import java.sql.SQLException;
 
 public abstract class JdbcTemplate {
 
-    public void update() throws SQLException {
+    public void update(String sql) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            String sql = creatQuery();
             pstmt = con.prepareStatement(sql);
             setValues(pstmt);
 
@@ -29,8 +28,6 @@ public abstract class JdbcTemplate {
             }
         }
     }
-
-    abstract String creatQuery();
 
     abstract void setValues(PreparedStatement pstmt) throws SQLException;
 }
