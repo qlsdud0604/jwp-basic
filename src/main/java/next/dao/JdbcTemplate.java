@@ -9,14 +9,14 @@ import java.sql.SQLException;
 
 public abstract class JdbcTemplate {
 
-    public void update(User user) throws SQLException {
+    public void update() throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             String sql = creatQuery();
             pstmt = con.prepareStatement(sql);
-            setValues(user, pstmt);
+            setValues(pstmt);
 
             pstmt.executeUpdate();
         } finally {
@@ -32,5 +32,5 @@ public abstract class JdbcTemplate {
 
     abstract String creatQuery();
 
-    abstract void setValues(User user, PreparedStatement pstmt) throws SQLException;
+    abstract void setValues(PreparedStatement pstmt) throws SQLException;
 }
