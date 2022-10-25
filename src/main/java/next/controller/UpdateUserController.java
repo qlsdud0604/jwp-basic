@@ -4,18 +4,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import core.mvc.Controller;
+import next.dao.UserDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import core.db.DataBase;
 import next.model.User;
 
 public class UpdateUserController implements Controller {
-    private static final Logger log = LoggerFactory.getLogger(UpdateUserController.class);
+    private static final Logger log = LoggerFactory.getLogger(CreateUserController.class);
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        User user = DataBase.findUserById(request.getParameter("userId"));
+        String userId = request.getParameter("userId");
+
+        UserDao userDao = new UserDao();
+        User user = userDao.findByUserId(userId);
 
         if (!UserSessionUtils.isSameUser(request.getSession(), user)) {
             throw new IllegalStateException("다른 사용자의 정보를 수정할 수 없습니다.");
@@ -29,7 +32,7 @@ public class UpdateUserController implements Controller {
         );
 
         log.debug("update user : {}", updateUser);
-        user.update(updateUser);
+        userDao.update(updateUser);
         return "redirect:/";
     }
 }
