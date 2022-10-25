@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import core.jdbc.JdbcTemplate;
 import next.model.User;
 
 public class UserDao {
