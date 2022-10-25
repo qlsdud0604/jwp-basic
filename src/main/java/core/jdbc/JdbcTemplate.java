@@ -1,6 +1,4 @@
-package next.dao;
-
-import core.jdbc.ConnectionManager;
+package core.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,15 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class JdbcTemplate {
+public class JdbcTemplate {
 
-    public void update(String sql) throws SQLException {
+    public void update(String sql, PreparedStatementSetter pss) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
             pstmt = con.prepareStatement(sql);
-            setValues(pstmt);
+            pss.setValues(pstmt);
 
             pstmt.executeUpdate();
         } finally {
@@ -31,21 +29,21 @@ public abstract class JdbcTemplate {
         }
     }
 
-    public List select(String sql) throws SQLException {
+    public List select(String sql, PreparedStatementSetter pss, RowMapper rm) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
             con = ConnectionManager.getConnection();
             pstmt = con.prepareStatement(sql);
-            setValues(pstmt);
+            pss.setValues(pstmt);
 
             rs = pstmt.executeQuery();
 
             List<Object> result = new ArrayList<Object>();
 
             while (rs.next()) {
-                result.add(mapRow(rs));
+                result.add(rm.mapRow(rs));
             }
 
             return result;
@@ -62,17 +60,12 @@ public abstract class JdbcTemplate {
         }
     }
 
-    public Object selectForObject(String sql) throws SQLException {
-        List result = select(sql);
+    public Object selectForObject(String sql, PreparedStatementSetter pss, RowMapper rm) throws SQLException {
+        List result = select(sql, pss, rm);
 
         if (result.isEmpty()) {
             return null;
         }
         return result.get(0);
     }
-
-    abstract void setValues(PreparedStatement pstmt) throws SQLException;
-
-    abstract Object mapRow(ResultSet rs) throws SQLException;
-
 }
