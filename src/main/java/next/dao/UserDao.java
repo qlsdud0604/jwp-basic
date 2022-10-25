@@ -16,6 +16,9 @@ public class UserDao {
                 pstmt.setString(3, user.getName());
                 pstmt.setString(4, user.getEmail());
             }
+            Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
         };
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql);
@@ -23,12 +26,14 @@ public class UserDao {
 
     public void update(User user) throws SQLException {
         JdbcTemplate jdbcTemplate = new JdbcTemplate() {
-            @Override
             void setValues(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getPassword());
                 pstmt.setString(2, user.getName());
                 pstmt.setString(3, user.getEmail());
                 pstmt.setString(4, user.getUserId());
+            }
+            Object mapRow(ResultSet rs) throws SQLException {
+                return null;
             }
         };
         String sql = "UPDATE USERS SET password=?, name=?, email=? WHERE userid=?";
@@ -36,13 +41,9 @@ public class UserDao {
     }
 
     public List<User> findAll() throws SQLException {
-        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
-            @Override
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             void setValues(PreparedStatement pstmt) throws SQLException {
-
             }
-
-            @Override
             Object mapRow(ResultSet rs) throws SQLException {
                 return new User(
                         rs.getString("userId"),
@@ -57,13 +58,10 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        SelectJdbcTemplate jdbcTemplate = new SelectJdbcTemplate() {
-            @Override
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             void setValues(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, userId);
             }
-
-            @Override
             Object mapRow(ResultSet rs) throws SQLException {
                 return new User(
                         rs.getString("userId"),
