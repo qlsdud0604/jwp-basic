@@ -9,7 +9,7 @@ import java.util.List;
 
 public class JdbcTemplate {
 
-    public void update(String sql, PreparedStatementSetter pss) throws SQLException {
+    public void update(String sql, PreparedStatementSetter pss) throws DataAccessException {
         Connection con = null;
         PreparedStatement pstmt = null;
         try {
@@ -18,18 +18,27 @@ public class JdbcTemplate {
             pss.setValues(pstmt);
 
             pstmt.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
         } finally {
             if (pstmt != null) {
-                pstmt.close();
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DataAccessException(e);
+                }
             }
-
             if (con != null) {
-                con.close();
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    throw new DataAccessException(e);
+                }
             }
         }
     }
 
-    public List select(String sql, PreparedStatementSetter pss, RowMapper rm) throws SQLException {
+    public List select(String sql, PreparedStatementSetter pss, RowMapper rm) throws DataAccessException {
         Connection con = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -47,20 +56,34 @@ public class JdbcTemplate {
             }
 
             return result;
+        } catch (SQLException e) {
+            throw new DataAccessException(e);
         } finally {
             if (rs != null) {
-                rs.close();
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    throw new DataAccessException(e);
+                }
             }
             if (pstmt != null) {
-                pstmt.close();
+                try {
+                    pstmt.close();
+                } catch (SQLException e) {
+                    throw new DataAccessException(e);
+                }
             }
             if (con != null) {
-                con.close();
+                try {
+                    con.close();
+                } catch (SQLException e) {
+                    throw new DataAccessException(e);
+                }
             }
         }
     }
 
-    public Object selectForObject(String sql, PreparedStatementSetter pss, RowMapper rm) throws SQLException {
+    public Object selectForObject(String sql, PreparedStatementSetter pss, RowMapper rm) throws DataAccessException {
         List result = select(sql, pss, rm);
 
         if (result.isEmpty()) {
