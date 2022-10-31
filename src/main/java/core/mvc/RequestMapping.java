@@ -1,15 +1,20 @@
 package core.mvc;
 
-import next.controller.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import next.controller.qna.AddAnswerController;
+import next.controller.qna.DeleteAnswerController;
+import next.controller.user.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import next.controller.HomeController;
+import next.controller.qna.ShowController;
+
 public class RequestMapping {
-    private static final Logger log = LoggerFactory.getLogger(RequestMapping.class);
-    private Map<String, Controller> mappings = new HashMap<String, Controller>();
+    private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
+    private Map<String, Controller> mappings = new HashMap<>();
 
     void initMapping() {
         mappings.put("/", new HomeController());
@@ -22,8 +27,11 @@ public class RequestMapping {
         mappings.put("/users/create", new CreateUserController());
         mappings.put("/users/updateForm", new UpdateFormUserController());
         mappings.put("/users/update", new UpdateUserController());
+        mappings.put("/qna/show", new ShowController());
+        mappings.put("/api/qna/addAnswer", new AddAnswerController());
+        mappings.put("/api/qna/deleteAnswer", new DeleteAnswerController());
 
-        log.info("Initialized Request Mapping");
+        logger.info("Initialized Request Mapping!");
     }
 
     public Controller findController(String url) {
@@ -33,5 +41,4 @@ public class RequestMapping {
     void put(String url, Controller controller) {
         mappings.put(url, controller);
     }
-
 }
