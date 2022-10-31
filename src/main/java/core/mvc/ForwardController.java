@@ -9,12 +9,12 @@ public class ForwardController implements Controller {
     public ForwardController(String forwardUrl) {
         this.forwardUrl = forwardUrl;
         if (forwardUrl == null) {
-            throw new NullPointerException("forwardUrl is null. 이동할 URL을 입력하세요.");
+            throw new NullPointerException("이동할 URL을 입력하세요.");
         }
     }
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        return forwardUrl;
+    public View execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
+        return new JspView(forwardUrl);
     }
 }
