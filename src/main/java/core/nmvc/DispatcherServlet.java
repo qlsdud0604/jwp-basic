@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 public class DispatcherServlet extends HttpServlet {
     private static final Logger logger = LoggerFactory.getLogger(DispatcherServlet.class);
     private List<HandlerMapping> mappings = Lists.newArrayList();
+    private List<HandlerAdapter> adapters = Lists.newArrayList();
 
     @Override
     public void init() throws ServletException {
@@ -32,6 +33,9 @@ public class DispatcherServlet extends HttpServlet {
 
         mappings.add(lhm);
         mappings.add(ahm);
+
+        adapters.add(new ControllerHandlerAdapter());
+        adapters.add(new HandlerExecutionHandlerAdapter());
     }
 
     @Override
@@ -63,10 +67,11 @@ public class DispatcherServlet extends HttpServlet {
     }
 
     private ModelAndView execute(Object handler, HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        if (handler instanceof Controller) {
-            return ((Controller)handler).execute(req, resp);
-        } else {
-            return ((HandlerExecution)handler).handle(req, resp);
+        for (HandlerAdapter adapter : adapters) {
+            if (adapter.supports(handler)) {
+                return adapter.handler(req, resp, handler);
+            }
         }
+        return null;
     }
 }
