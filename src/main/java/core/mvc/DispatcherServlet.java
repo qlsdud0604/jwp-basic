@@ -2,7 +2,6 @@ package core.mvc;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -30,16 +29,15 @@ public class DispatcherServlet extends HttpServlet {
         String requestUri = req.getRequestURI();
         logger.debug("Method : {}, Request URI : {}", req.getMethod(), requestUri);
 
-        Controller controller = rm.findController(requestUri);
-        ModelAndView modelAndView;
+        Controller controller = rm.findController(req.getRequestURI());
+        ModelAndView mav;
         try {
-            modelAndView = controller.execute(req, resp);
-            View view = modelAndView.GetView();
-            view.render(modelAndView.getModel(), req, resp);
+            mav = controller.execute(req, resp);
+            View view = mav.getView();
+            view.render(mav.getModel(), req, resp);
         } catch (Throwable e) {
             logger.error("Exception : {}", e);
             throw new ServletException(e.getMessage());
         }
     }
-
 }
