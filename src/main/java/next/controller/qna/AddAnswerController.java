@@ -18,8 +18,13 @@ import next.model.User;
 public class AddAnswerController extends AbstractController {
     private static final Logger log = LoggerFactory.getLogger(AddAnswerController.class);
 
-    private QuestionDao questionDao = QuestionDao.getInstance();
-    private AnswerDao answerDao = AnswerDao.getInstance();
+    private QuestionDao questionDao;
+    private AnswerDao answerDao;
+
+    public AddAnswerController(QuestionDao questionDao, AnswerDao answerDao) {
+        this.questionDao = questionDao;
+        this.answerDao = answerDao;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse response) throws Exception {
@@ -28,11 +33,8 @@ public class AddAnswerController extends AbstractController {
         }
 
         User user = UserSessionUtils.getUserFromSession(req.getSession());
-        Answer answer = new Answer(
-                user.getUserId(),
-                req.getParameter("contents"),
-                Long.parseLong(req.getParameter("questionId"))
-        );
+        Answer answer = new Answer(user.getUserId(), req.getParameter("contents"),
+                Long.parseLong(req.getParameter("questionId")));
         log.debug("answer : {}", answer);
 
         Answer savedAnswer = answerDao.insert(answer);

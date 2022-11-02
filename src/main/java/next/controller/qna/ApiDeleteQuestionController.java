@@ -13,7 +13,11 @@ import next.model.Result;
 import next.service.QnaService;
 
 public class ApiDeleteQuestionController extends AbstractController {
-    private QnaService qnaService = QnaService.getInstance(QuestionDao.getInstance(), AnswerDao.getInstance());
+    private QnaService qnaService;
+
+    public ApiDeleteQuestionController(QnaService qnaService) {
+        this.qnaService = qnaService;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {

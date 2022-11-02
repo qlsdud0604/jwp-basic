@@ -12,7 +12,11 @@ import next.dao.QuestionDao;
 import next.service.QnaService;
 
 public class DeleteQuestionController extends AbstractController {
-    private QnaService qnaService = QnaService.getInstance(QuestionDao.getInstance(), AnswerDao.getInstance());
+    private QnaService qnaService;
+
+    public DeleteQuestionController(QnaService qnaService) {
+        this.qnaService = qnaService;
+    }
 
     @Override
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse resp) throws Exception {
