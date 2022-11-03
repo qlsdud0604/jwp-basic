@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Lists;
-import core.mvc.Controller;
-import core.mvc.LegacyHandlerMapping;
 import core.mvc.ModelAndView;
 import core.mvc.View;
 import org.slf4j.Logger;
@@ -25,16 +23,11 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        LegacyHandlerMapping lhm = new LegacyHandlerMapping();
-        lhm.initMapping();
-
-        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("next.controller");
+        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("next");
         ahm.initialize();
 
-        mappings.add(lhm);
         mappings.add(ahm);
 
-        adapters.add(new ControllerHandlerAdapter());
         adapters.add(new HandlerExecutionHandlerAdapter());
     }
 
