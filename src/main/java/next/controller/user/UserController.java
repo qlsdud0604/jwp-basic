@@ -1,6 +1,7 @@
 package next.controller.user;
 
 import core.annotation.Controller;
+import core.annotation.Inject;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
 import core.mvc.ModelAndView;
@@ -19,7 +20,12 @@ import javax.servlet.http.HttpSession;
 public class UserController extends AbstractNewController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
-    private UserDao userDao = UserDao.getInstance();
+    private UserDao userDao;
+
+    @Inject
+    public UserController(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @RequestMapping("/users")
     public ModelAndView list(HttpServletRequest req, HttpServletResponse resp) throws Exception {
@@ -117,6 +123,6 @@ public class UserController extends AbstractNewController {
     public ModelAndView logout(HttpServletRequest req,  HttpServletResponse resp) throws Exception {
         HttpSession session = req.getSession();
         session.removeAttribute("user");
-        return jspView("redirect:/qna/list");
+        return jspView("redirect:/");
     }
 }
