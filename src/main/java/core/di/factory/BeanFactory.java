@@ -25,6 +25,10 @@ public class BeanFactory {
         this.preInstantiateBeans = preInstantiateBeans;
     }
 
+    public Set<Class<?>> getPreInstantiateBeans() {
+        return preInstantiateBeans;
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T getBean(Class<T> requiredType) {
         return (T) beans.get(requiredType);
@@ -36,6 +40,10 @@ public class BeanFactory {
                 instantiateClass(clazz);
             }
         }
+    }
+
+    void registerBean(Class<?> clazz, Object bean) {
+        beans.put(clazz, bean);
     }
 
     /** Class에 대한 빈 인스턴스를 생성하는 메서드 */
