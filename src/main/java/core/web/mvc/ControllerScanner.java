@@ -1,4 +1,4 @@
-package core.nmvc;
+package core.web.mvc;
 
 import com.google.common.collect.Maps;
 import core.annotation.Controller;

@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 import core.annotation.Controller;
 import core.annotation.Inject;
 import core.annotation.RequestMapping;
-import core.nmvc.AbstractNewController;
+import core.web.mvc.AbstractNewController;
 import next.dao.QuestionDao;
-import core.mvc.ModelAndView;
+import core.web.view.ModelAndView;
 
 @Controller
 public class HomeController extends AbstractNewController {

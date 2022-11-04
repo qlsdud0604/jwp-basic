@@ -1,4 +1,6 @@
-package core.mvc;
+package core.web.oldmvc;
+
+import core.web.view.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

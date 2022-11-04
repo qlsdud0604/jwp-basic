@@ -1,9 +1,9 @@
-package core.nmvc;
+package core.web.mvc;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import core.mvc.ModelAndView;
+import core.web.view.ModelAndView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

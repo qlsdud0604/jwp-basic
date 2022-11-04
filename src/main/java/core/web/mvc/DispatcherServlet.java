@@ -1,4 +1,4 @@
-package core.nmvc;
+package core.web.mvc;
 
 import java.io.IOException;
 import java.util.List;
@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.common.collect.Lists;
-import core.mvc.ModelAndView;
-import core.mvc.View;
+import core.web.view.ModelAndView;
+import core.web.view.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
